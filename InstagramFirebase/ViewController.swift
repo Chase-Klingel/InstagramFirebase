@@ -12,7 +12,6 @@ class ViewController: UIViewController {
     let plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "plus_photo"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
     }()
@@ -23,7 +22,6 @@ class ViewController: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
-        tf.translatesAutoresizingMaskIntoConstraints = false
 
         return tf
     }()
@@ -34,7 +32,6 @@ class ViewController: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
-        tf.translatesAutoresizingMaskIntoConstraints = false
         
         return tf
     }()
@@ -46,7 +43,6 @@ class ViewController: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
-        tf.translatesAutoresizingMaskIntoConstraints = false
         
         return tf
     }()
@@ -54,7 +50,7 @@ class ViewController: UIViewController {
     let signUpButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Sign Up", for: .normal)
-        button.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+        button.backgroundColor = UIColor.rgb(red: 149, green: 204, blue: 244)
         button.layer.cornerRadius = 5
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(.white, for: .normal)
@@ -67,27 +63,16 @@ class ViewController: UIViewController {
         
         view.addSubview(plusPhotoButton)
         
-        NSLayoutConstraint.activate([
-            plusPhotoButton.heightAnchor.constraint(equalToConstant: 140),
-            plusPhotoButton.widthAnchor.constraint(equalToConstant: 140),
-            plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            plusPhotoButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 40)
-        ])
+        plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         
-       // view.addSubview(emailTextField)
+        plusPhotoButton.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 140, height: 140)
         
         setupInputFields()
-        
     }
     
     fileprivate func setupInputFields() {
-        let redView = UIView()
-        redView.backgroundColor = .red
-        
         let stackView = UIStackView(arrangedSubviews:
             [emailTextField, usernameTextField, passwordTextField, signUpButton])
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
@@ -95,12 +80,48 @@ class ViewController: UIViewController {
         
         view.addSubview(stackView)
         
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: plusPhotoButton.bottomAnchor, constant: 20),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
-            stackView.heightAnchor.constraint(equalToConstant: 200)
-        ])
+        stackView.anchor(top: plusPhotoButton.bottomAnchor, leading: view.leadingAnchor,
+                         bottom: nil, trailing: view.trailingAnchor, paddingTop: 20,
+                         paddingLeft: 40, paddingBottom: 0, paddingRight: 40,
+                         width: 0, height: 200)
+    }
+}
+
+extension UIView {
+    func anchor(top: NSLayoutYAxisAnchor?, leading: NSLayoutXAxisAnchor?,
+                bottom: NSLayoutYAxisAnchor?, trailing: NSLayoutXAxisAnchor?,
+                paddingTop: CGFloat, paddingLeft: CGFloat, paddingBottom: CGFloat,
+                paddingRight: CGFloat, width: CGFloat, height: CGFloat) {
+        
+        translatesAutoresizingMaskIntoConstraints = false
+
+        if let top = top {
+            topAnchor.constraint(equalTo: top,
+                                 constant: paddingTop).isActive = true
+        }
+        
+        if let leading = leading {
+            leadingAnchor.constraint(equalTo: leading,
+                                     constant: paddingLeft).isActive = true
+        }
+        
+        if let bottom = bottom {
+            bottomAnchor.constraint(equalTo: bottom,
+                                    constant: paddingBottom).isActive = true
+        }
+        
+        if let trailing = trailing {
+            trailingAnchor.constraint(equalTo: trailing,
+                                      constant: -paddingRight).isActive = true
+        }
+        
+        if width != 0 {
+            widthAnchor.constraint(equalToConstant: width).isActive = true
+        }
+        
+        if height != 0 {
+            heightAnchor.constraint(equalToConstant: height).isActive = true
+        }
     }
 }
 
