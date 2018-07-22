@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>271314518631-bo7qb2qldmiqjh2a1uvnfu861sj00i18.apps.googleusercontent.com</string>
+	<string>679455898988-ppfblapkckcktt0tvsionu6e6oq9r6t1.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.271314518631-bo7qb2qldmiqjh2a1uvnfu861sj00i18</string>
+	<string>com.googleusercontent.apps.679455898988-ppfblapkckcktt0tvsionu6e6oq9r6t1</string>
 	<key>API_KEY</key>
-	<string>AIzaSyB4tLwJtcWlEj6Tup5-Gh4d1cq6vtvNxeM</string>
+	<string>AIzaSyBH9PYgzBRLuQLOxiGZHPi1Rv07gIh5j4I</string>
 	<key>GCM_SENDER_ID</key>
-	<string>271314518631</string>
+	<string>679455898988</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.chaseklingel.InstagramFirebase</string>
 	<key>PROJECT_ID</key>
-	<string>instagramfirebase-8df6e</string>
+	<string>instagram-17eb8</string>
 	<key>STORAGE_BUCKET</key>
-	<string>instagramfirebase-8df6e.appspot.com</string>
+	<string>instagram-17eb8.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:271314518631:ios:3b99f146a222831f</string>
+	<string>1:679455898988:ios:3b99f146a222831f</string>
 	<key>DATABASE_URL</key>
-	<string>https://instagramfirebase-8df6e.firebaseio.com</string>
+	<string>https://instagram-17eb8.firebaseio.com</string>
 </dict>
 </plist>
