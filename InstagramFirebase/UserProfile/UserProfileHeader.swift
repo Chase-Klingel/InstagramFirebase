@@ -11,11 +11,13 @@ import UIKit
 class UserProfileHeader: UICollectionViewCell {
     var user: User? {
         didSet {
-            setupProfileImage()
+            setupProfileImageData()
             
             usernameLabel.text = user?.username
         }
     }
+    
+    // MARK: - UI Element Definitions
     
     let profileImageView: UIImageView = {
         let iv = UIImageView()
@@ -70,7 +72,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     let followersLabel: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "11\n",
+        let attributedText = NSMutableAttributedString(string: "0\n",
                                                        attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
         attributedText.append(NSMutableAttributedString(string: "followers",
                                                         attributes: [NSAttributedStringKey.foregroundColor: UIColor.gray,
@@ -84,7 +86,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     let followingLabel: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "11\n",
+        let attributedText = NSMutableAttributedString(string: "0\n",
                                                        attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
         attributedText.append(NSMutableAttributedString(string: "following",
                                                         attributes: [NSAttributedStringKey.foregroundColor: UIColor.gray,
@@ -108,9 +110,21 @@ class UserProfileHeader: UICollectionViewCell {
         return  button
     }()
     
+    // MARK: - Init UICollectionViewCell
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        setupProfileImage()
+        setupUserStatsView()
+        setupEditProfileButton()
+        setupBottomToolBar()
+        setupUsernameLabel()
+    }
+    
+    // MARK: - Profile Image Positioning
+    
+    fileprivate func setupProfileImage() {
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor, leading: leadingAnchor,
                                 bottom: nil, trailing: nil,
@@ -119,22 +133,41 @@ class UserProfileHeader: UICollectionViewCell {
                                 width: 80, height: 80)
         profileImageView.layer.cornerRadius = 80 / 2
         profileImageView.clipsToBounds = true
-        
-        setupUserStatsView()
-        setupEditProfileButton()
-        setupBottomToolBar()
-        setupUsernameLabel()
     }
+    
+    fileprivate func setupProfileImageData() {
+        guard let profileImageUrl = user?.profileImageUrl else { return }
+        guard let url = URL(string: profileImageUrl) else { return }
+        
+        URLSession.shared.dataTask(with: url) { (data, response, err) in
+            if let err = err {
+                print("Failed to fetch profile image: ", err)
+                return
+            }
+            
+            guard let data = data else { return }
+            print("data => \(data)")
+            let image = UIImage(data: data)
+            
+            DispatchQueue.main.async {
+                self.profileImageView.image = image
+            }
+            }.resume()
+    }
+    
+    // MARK: - Edit Profile Button Positioning
     
     fileprivate func setupEditProfileButton() {
         addSubview(editProfileButton)
         
         editProfileButton.anchor(top: postsLabel.bottomAnchor, leading: postsLabel.leadingAnchor,
                                  bottom: nil, trailing: followingLabel.trailingAnchor,
-                                 paddingTop: 8, paddingLeft: 0, paddingBottom: 0,
+                                 paddingTop: 2, paddingLeft: 0, paddingBottom: 0,
                                  paddingRight: 0,
                                  width: 0, height: 0)
     }
+    
+    // MARK: - Profile Stats Positioning
     
     fileprivate func setupUserStatsView() {
         let stackView = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
@@ -150,6 +183,8 @@ class UserProfileHeader: UICollectionViewCell {
         stackView.distribution = .fillEqually
     }
     
+    // MARK: - Header Tool Bar Positioning
+
     fileprivate func setupBottomToolBar() {
         let topDividerView = UIView()
         topDividerView.backgroundColor = UIColor(white: 0, alpha: 0.1)
@@ -185,35 +220,18 @@ class UserProfileHeader: UICollectionViewCell {
                                  width: 0, height: 0.25)
     }
     
+    // MARK: - Username Positioning
+
     fileprivate func setupUsernameLabel() {
         addSubview(usernameLabel)
         
         usernameLabel.anchor(top: profileImageView.bottomAnchor, leading: leadingAnchor,
                              bottom: nil, trailing: trailingAnchor,
-                             paddingTop: 20, paddingLeft: 12,
+                             paddingTop: 12, paddingLeft: 12,
                              paddingBottom: 0, paddingRight: 0,
                              width: 0, height: 0)
     }
     
-    fileprivate func setupProfileImage() {
-        guard let profileImageUrl = user?.profileImageUrl else { return }
-        guard let url = URL(string: profileImageUrl) else { return }
-        
-        URLSession.shared.dataTask(with: url) { (data, response, err) in
-            if let err = err {
-                print("Failed to fetch profile image: ", err)
-                return
-            }
-            
-            guard let data = data else { return }
-            print("data => \(data)")
-            let image = UIImage(data: data)
-            
-            DispatchQueue.main.async {
-                self.profileImageView.image = image
-            }
-        }.resume()
-    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

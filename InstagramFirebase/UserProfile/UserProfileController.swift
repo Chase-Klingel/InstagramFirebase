@@ -11,6 +11,9 @@ import Firebase
 
 class UserProfileController: UICollectionViewController,
     UICollectionViewDelegateFlowLayout {
+    var user: User?
+    let cellId = "cellId"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -18,10 +21,15 @@ class UserProfileController: UICollectionViewController,
         collectionView?.register(UserProfileHeader.self,
                                  forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
                                  withReuseIdentifier: "headerId")
+        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         
+        setupLogOutButton()
         fetchUser()
     }
     
+    // MARK: - Collection View Definition
+    
+    // viewForSupplementaryElementOfKind
     override func collectionView(_ collectionView: UICollectionView,
                                  viewForSupplementaryElementOfKind kind: String,
                                  at indexPath: IndexPath) -> UICollectionReusableView {
@@ -36,13 +44,72 @@ class UserProfileController: UICollectionViewController,
         return header
     }
     
+    // numberOfItems
+    override func collectionView(_ collectionView: UICollectionView,
+                                 numberOfItemsInSection section: Int) -> Int {
+        return 7
+    }
+    
+    // cellForItem
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        cell.backgroundColor = .purple
+        
+        return cell
+    }
+    
+    // minimumInterItemSpacing
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+    
+    // minimumLineSpacing
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+    
+    // sizeForItem
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (view.frame.width - 2) / 3
+        
+        return CGSize(width: width, height: width)
+    }
+    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 200)
     }
     
-    var user: User?
+    // MARK: - Log Out
+    
+    fileprivate func setupLogOutButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), style: .plain,
+                                                            target: self, action: #selector(handleLogOut))
+    }
+    
+    @objc func handleLogOut() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Log out", style: .destructive, handler: { (_) in
+            do {
+                try Auth.auth().signOut()
+            } catch let signOutErr {
+                print("Failed to sign out:", signOutErr)
+            }
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Fetch User
     
     fileprivate func fetchUser() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
