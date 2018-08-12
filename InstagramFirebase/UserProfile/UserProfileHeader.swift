@@ -128,8 +128,7 @@ class UserProfileHeader: UICollectionViewCell {
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor, leading: leadingAnchor,
                                 bottom: nil, trailing: nil,
-                                paddingTop: 12, paddingLeft: 12,
-                                paddingBottom: 0, paddingRight: 0,
+                                paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0,
                                 width: 80, height: 80)
         profileImageView.layer.cornerRadius = 80 / 2
         profileImageView.clipsToBounds = true
@@ -162,8 +161,7 @@ class UserProfileHeader: UICollectionViewCell {
         
         editProfileButton.anchor(top: postsLabel.bottomAnchor, leading: postsLabel.leadingAnchor,
                                  bottom: nil, trailing: followingLabel.trailingAnchor,
-                                 paddingTop: 2, paddingLeft: 0, paddingBottom: 0,
-                                 paddingRight: 0,
+                                 paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
                                  width: 0, height: 0)
     }
     
@@ -175,8 +173,7 @@ class UserProfileHeader: UICollectionViewCell {
         
         stackView.anchor(top: topAnchor, leading: profileImageView.trailingAnchor,
                          bottom: nil, trailing: trailingAnchor,
-                         paddingTop: 12, paddingLeft: 12,
-                         paddingBottom: 0, paddingRight: 12,
+                         paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 12,
                          width: 0, height: 50)
         
         stackView.axis = .horizontal
@@ -200,8 +197,7 @@ class UserProfileHeader: UICollectionViewCell {
         
         stackView.anchor(top: nil, leading: leadingAnchor,
                          bottom: bottomAnchor, trailing: trailingAnchor,
-                         paddingTop: 0, paddingLeft: 0,
-                         paddingBottom: 0, paddingRight: 0,
+                         paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
                          width: 0, height: 50)
         
         stackView.axis = .horizontal
@@ -209,14 +205,12 @@ class UserProfileHeader: UICollectionViewCell {
         
         topDividerView.anchor(top: stackView.topAnchor, leading: leadingAnchor,
                               bottom: nil, trailing: trailingAnchor,
-                              paddingTop: 0, paddingLeft: 0,
-                              paddingBottom: 0, paddingRight: 0,
+                              paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
                               width: 0, height: 0.25)
         
         bottomDividerView.anchor(top: stackView.bottomAnchor, leading: leadingAnchor,
                                  bottom: nil, trailing: trailingAnchor,
-                                 paddingTop: 0, paddingLeft: 0,
-                                 paddingBottom: 0, paddingRight: 0,
+                                 paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
                                  width: 0, height: 0.25)
     }
     
@@ -227,8 +221,7 @@ class UserProfileHeader: UICollectionViewCell {
         
         usernameLabel.anchor(top: profileImageView.bottomAnchor, leading: leadingAnchor,
                              bottom: nil, trailing: trailingAnchor,
-                             paddingTop: 12, paddingLeft: 12,
-                             paddingBottom: 0, paddingRight: 0,
+                             paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0,
                              width: 0, height: 0)
     }
     

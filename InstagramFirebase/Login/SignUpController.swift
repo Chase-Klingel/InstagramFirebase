@@ -9,8 +9,11 @@
 import UIKit
 import Firebase
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate,
+class SignUpController: UIViewController, UIImagePickerControllerDelegate,
     UINavigationControllerDelegate {
+    
+    // MARK: - Select User Profile IMG
+    
     let plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "plus_photo").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -42,6 +45,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
         
         dismiss(animated: true, completion: nil)
     }
+    
+    // MARK: - UI Input Field Definitions (Email, Username, Password)
 
     let emailTextField: UITextField = {
         let tf = UITextField()
@@ -54,20 +59,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
         
         return tf
     }()
-    
-    @objc func handleTextInputChange() {
-        let isFormValid = emailTextField.text?.isEmpty != true
-            && usernameTextField.text?.isEmpty != true
-            && passwordTextField.text?.isEmpty != true
-        
-        if isFormValid {
-            signUpButton.isEnabled = true
-            signUpButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
-        } else {
-            signUpButton.isEnabled = false
-            signUpButton.backgroundColor = UIColor.rgb(red: 149, green: 204, blue: 244)
-        }
-    }
     
     let usernameTextField: UITextField = {
         let tf = UITextField()
@@ -93,6 +84,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
         
         return tf
     }()
+    
+    @objc func handleTextInputChange() {
+        let isFormValid = emailTextField.text?.isEmpty != true
+            && usernameTextField.text?.isEmpty != true
+            && passwordTextField.text?.isEmpty != true
+        
+        if isFormValid {
+            signUpButton.isEnabled = true
+            signUpButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
+        } else {
+            signUpButton.isEnabled = false
+            signUpButton.backgroundColor = UIColor.rgb(red: 149, green: 204, blue: 244)
+        }
+    }
+    
+    // MARK: - Handle Sign Up
     
     let signUpButton: UIButton = {
         let button = UIButton(type: .system)
@@ -163,22 +170,44 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
             })
         })
     }
+    
+    // MARK: - Already Have Account Helper Button
+    
+    let alreadyHaveAccountButton: UIButton = {
+        let button = UIButton(type: .system)
+        let attributedText = NSMutableAttributedString(string: "Already have an account? ",
+                                                       attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14),
+                                                                    NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        attributedText.append(NSMutableAttributedString(string: "Sign In", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14, weight: .bold), NSAttributedStringKey.foregroundColor: UIColor.rgb(red: 17, green: 154, blue: 237)]))
+        button.setAttributedTitle(attributedText, for: .normal)
+        button.addTarget(self, action: #selector(handleShowLoginController), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    @objc fileprivate func handleShowLoginController() {
+        _ = navigationController?.popViewController(animated: true)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(plusPhotoButton)
+        view.backgroundColor = .white
         
+        view.addSubview(plusPhotoButton)
      
         plusPhotoButton.anchor(top: view.topAnchor, leading: nil,
-                               bottom: nil, trailing: nil, paddingTop: 40,
-                               paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
+                               bottom: nil, trailing: nil,
+                               paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
                                width: 140, height: 140)
      
         plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-
+        
         setupInputFields()
+        setupHaveAccountButton()
     }
+    
+    // MARK: - Position UI Input Fields (email, username, password, sign up button)
 
     fileprivate func setupInputFields() {
         let stackView = UIStackView(arrangedSubviews:
@@ -191,9 +220,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate,
         view.addSubview(stackView)
         
         stackView.anchor(top: plusPhotoButton.bottomAnchor, leading: view.leadingAnchor,
-                         bottom: nil, trailing: view.trailingAnchor, paddingTop: 20,
-                         paddingLeft: 40, paddingBottom: 0, paddingRight: 40,
+                         bottom: nil, trailing: view.trailingAnchor,
+                         paddingTop: 20, paddingLeft: 40, paddingBottom: 0, paddingRight: 40,
                          width: 0, height: 200)
+    }
+    
+    // MARK: - Position Have Account Button
+    
+    fileprivate func setupHaveAccountButton() {
+        view.addSubview(alreadyHaveAccountButton)
+        
+        alreadyHaveAccountButton.anchor(top: nil, leading: view.leadingAnchor,
+                           bottom: view.bottomAnchor, trailing: view.trailingAnchor,
+                           paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
+                           width: 0, height: 50)
     }
 }
 
