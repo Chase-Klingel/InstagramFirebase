@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 
 class MainTabBarController: UITabBarController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,6 +29,10 @@ class MainTabBarController: UITabBarController {
             
         }
         
+        setupViewControllers()
+    }
+    
+    func setupViewControllers() {
         let layout = UICollectionViewFlowLayout()
         let userProfileController = UserProfileController(collectionViewLayout: layout)
         
