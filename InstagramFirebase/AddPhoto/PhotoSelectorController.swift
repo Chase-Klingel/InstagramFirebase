@@ -19,6 +19,7 @@ class PhotoSelectorController: UICollectionViewController,
     var images = [UIImage]()
     var assets = [PHAsset]()
     var selectedImage: UIImage?
+    var header: PhotoSelectorHeader?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +40,7 @@ class PhotoSelectorController: UICollectionViewController,
         let fetchOptions = PHFetchOptions()
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
         
-        fetchOptions.fetchLimit = 10
+        fetchOptions.fetchLimit = 50
         fetchOptions.sortDescriptors = [sortDescriptor]
         
         return fetchOptions
@@ -98,6 +99,7 @@ class PhotoSelectorController: UICollectionViewController,
                                                                      withReuseIdentifier: headerId,
                                                                      for: indexPath) as! PhotoSelectorHeader
         
+        self.header = header
         header.photoImageView.image = selectedImage
         
         if let selectedImage = selectedImage {
@@ -110,6 +112,7 @@ class PhotoSelectorController: UICollectionViewController,
                                           targetSize: targetSize,
                                           contentMode: .default,
                                           options: nil) { (image, info) in
+                                            
                                             header.photoImageView.image = image
                 }
             }
@@ -130,6 +133,9 @@ class PhotoSelectorController: UICollectionViewController,
                                  didSelectItemAt indexPath: IndexPath) {
         self.selectedImage = images[indexPath.item]
         self.collectionView?.reloadData()
+        
+        let indexPath = IndexPath(item: 0, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
     }
     
     // below two methods reduces horizontal line spacing
@@ -191,6 +197,9 @@ class PhotoSelectorController: UICollectionViewController,
     }
     
     @objc func handleNext() {
+        let sharePhotoController = SharePhotoController()
+        sharePhotoController.selectedImage = header?.photoImageView.image
+        navigationController?.pushViewController(sharePhotoController, animated: true)
         print("handle next")
     }
 }

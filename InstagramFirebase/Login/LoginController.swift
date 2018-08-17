@@ -70,7 +70,6 @@ class LoginController: UIViewController {
     }()
     
     @objc fileprivate func handleTextInputChange() {
-        print("entering")
         let isFormValid = emailTextField.text?.isEmpty != true
                           && passwordTextField.text?.isEmpty != true
         
