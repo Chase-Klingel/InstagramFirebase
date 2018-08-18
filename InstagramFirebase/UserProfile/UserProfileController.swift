@@ -11,8 +11,13 @@ import Firebase
 
 class UserProfileController: UICollectionViewController,
     UICollectionViewDelegateFlowLayout {
+    
+    // MARK: - Instance Variables
+    
     var user: User?
     let cellId = "cellId"
+    let headerId = "headerId"
+    var posts = [Post]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,11 +25,12 @@ class UserProfileController: UICollectionViewController,
         collectionView?.backgroundColor = .white
         collectionView?.register(UserProfileHeader.self,
                                  forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
-                                 withReuseIdentifier: "headerId")
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
-        
+                                 withReuseIdentifier: headerId)
+        collectionView?.register(UserProfilePhotoCell.self,
+                                 forCellWithReuseIdentifier: cellId)
         setupLogOutButton()
         fetchUser()
+        fetchPosts()
     }
     
     // MARK: - Collection View Definition
@@ -47,33 +53,32 @@ class UserProfileController: UICollectionViewController,
     // numberOfItems
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
-        return 7
+        return posts.count
     }
     
     // cellForItem
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        cell.backgroundColor = .purple
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId,
+                                                      for: indexPath) as! UserProfilePhotoCell
         
+        cell.post = posts[indexPath.item]
+    
         return cell
     }
     
-    // minimumInterItemSpacing
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
     
-    // minimumLineSpacing
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
     
-    // sizeForItem
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -131,6 +136,24 @@ class UserProfileController: UICollectionViewController,
             self.collectionView?.reloadData()
         }) { (err) in
             print("Failed to fetch user:", err)
+        }
+    }
+    
+    // MARK: - Fetch Posts
+    
+    fileprivate func fetchPosts() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("posts").child(uid)
+        
+        ref.queryOrdered(byChild: "creationDate").observe(.childAdded, with: { (snapshot) in
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            
+            let post = Post(dictionary: dictionary)
+            self.posts.append(post)
+            self.posts.reverse()
+            self.collectionView?.reloadData()
+        }) { (err) in
+            print("Failed to fetch ordered posts: ", err)
         }
     }
 }

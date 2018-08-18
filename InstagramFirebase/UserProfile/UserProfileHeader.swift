@@ -9,9 +9,13 @@
 import UIKit
 
 class UserProfileHeader: UICollectionViewCell {
+    
+    // MARK: - Set Profile Image + Username
+    
     var user: User? {
         didSet {
-            setupProfileImageData()
+            guard let profileImageUrl = user?.profileImageUrl else { return }
+            profileImageView.loadImage(urlString: profileImageUrl)
             
             usernameLabel.text = user?.username
         }
@@ -19,8 +23,8 @@ class UserProfileHeader: UICollectionViewCell {
     
     // MARK: - UI Element Definitions
     
-    let profileImageView: UIImageView = {
-        let iv = UIImageView()
+    let profileImageView: CustomImageView = {
+        let iv = CustomImageView()
         
         return iv
     }()
@@ -132,26 +136,6 @@ class UserProfileHeader: UICollectionViewCell {
                                 width: 80, height: 80)
         profileImageView.layer.cornerRadius = 80 / 2
         profileImageView.clipsToBounds = true
-    }
-    
-    fileprivate func setupProfileImageData() {
-        guard let profileImageUrl = user?.profileImageUrl else { return }
-        guard let url = URL(string: profileImageUrl) else { return }
-        
-        URLSession.shared.dataTask(with: url) { (data, response, err) in
-            if let err = err {
-                print("Failed to fetch profile image: ", err)
-                return
-            }
-            
-            guard let data = data else { return }
-            print("data => \(data)")
-            let image = UIImage(data: data)
-            
-            DispatchQueue.main.async {
-                self.profileImageView.image = image
-            }
-            }.resume()
     }
     
     // MARK: - Edit Profile Button Positioning
