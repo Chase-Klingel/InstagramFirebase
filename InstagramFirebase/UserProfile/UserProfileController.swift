@@ -30,7 +30,8 @@ class UserProfileController: UICollectionViewController,
                                  forCellWithReuseIdentifier: cellId)
         setupLogOutButton()
         fetchUser()
-        fetchPosts()
+        fetchOrderedPosts()
+        // fetchPosts()
     }
     
     // MARK: - Collection View Definition
@@ -141,7 +142,7 @@ class UserProfileController: UICollectionViewController,
     
     // MARK: - Fetch Posts
     
-    fileprivate func fetchPosts() {
+    fileprivate func fetchOrderedPosts() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("posts").child(uid)
         
@@ -154,6 +155,27 @@ class UserProfileController: UICollectionViewController,
             self.collectionView?.reloadData()
         }) { (err) in
             print("Failed to fetch ordered posts: ", err)
+        }
+    }
+    
+    fileprivate func fetchPosts() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        let ref = Database.database().reference().child("posts").child(uid)
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dictionaries = snapshot.value as? [String: Any] else { return }
+            
+            dictionaries.forEach({ (key, value) in
+                guard let dictionary = value as? [String: Any] else { return }
+                
+                let post = Post(dictionary: dictionary)
+                self.posts.append(post)
+            })
+            
+            self.collectionView?.reloadData()
+            
+        }) { (err) in
+            print("Failed to fetch posts:", err)
         }
     }
 }
