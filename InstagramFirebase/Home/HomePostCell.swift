@@ -15,7 +15,13 @@ class HomePostCell: UICollectionViewCell {
     var post: Post? {
         didSet {
             guard let imageUrl = post?.imageUrl else { return }
+            guard let profileImageUrl = post?.user.profileImageUrl else { return }
             photoImageView.loadImage(urlString: imageUrl)
+            userProfileImageView.loadImage(urlString: profileImageUrl)
+
+            usernameLabel.text = post?.user.username
+            //captionLabel.text = post?.caption
+            setupAttributedCaption()
         }
     }
     
@@ -74,23 +80,6 @@ class HomePostCell: UICollectionViewCell {
     
     let captionLabel: UILabel = {
         let label = UILabel()
-        // label.text = "SOMETHING"
-        
-        let attributedText = NSMutableAttributedString(string: "Username",
-                                                       attributes: [NSAttributedStringKey.font:
-                                                        UIFont.boldSystemFont(ofSize: 14)])
-        
-        attributedText.append(NSAttributedString(string: " Some caption text that will perhaps wrap onto the next line",
-                                                 attributes: [NSAttributedStringKey.font:
-                                                    UIFont.boldSystemFont(ofSize: 14)]))
-        
-        attributedText.append(NSAttributedString(string: "\n\n",
-                                                 attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 4)]))
-        
-        attributedText.append(NSAttributedString(string: "1 week ago",
-                                                 attributes: [NSAttributedStringKey.foregroundColor: UIColor.gray,
-                                                              NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-        label.attributedText = attributedText
         label.numberOfLines = 0
                 
         return label
@@ -172,6 +161,26 @@ class HomePostCell: UICollectionViewCell {
                               bottom: nil, trailing: trailingAnchor,
                               paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
                               width: 40, height: 50)
+    }
+    
+    fileprivate func setupAttributedCaption() {
+        guard let post = self.post else { return }
+        
+        let attributedText = NSMutableAttributedString(string: post.user.username,
+                                                       attributes: [NSAttributedStringKey.font:
+                                                        UIFont.boldSystemFont(ofSize: 14)])
+    
+        attributedText.append(NSAttributedString(string: " \(post.caption)",
+                                                 attributes: [NSAttributedStringKey.font:
+        UIFont.systemFont(ofSize: 14)]))
+    
+        attributedText.append(NSAttributedString(string: "\n\n",
+                                                 attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 4)]))
+    
+        attributedText.append(NSAttributedString(string: "1 week ago",
+                                                 attributes: [NSAttributedStringKey.foregroundColor: UIColor.gray,
+                                                              NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
+        captionLabel.attributedText = attributedText
     }
     
     fileprivate func setupPhotoCaption() {
