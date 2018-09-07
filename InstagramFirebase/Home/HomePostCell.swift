@@ -20,7 +20,6 @@ class HomePostCell: UICollectionViewCell {
             userProfileImageView.loadImage(urlString: profileImageUrl)
 
             usernameLabel.text = post?.user.username
-            //captionLabel.text = post?.caption
             setupAttributedCaption()
         }
     }
@@ -29,7 +28,6 @@ class HomePostCell: UICollectionViewCell {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .blue
         
         return iv
     }()
@@ -195,6 +193,4 @@ class HomePostCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
 }

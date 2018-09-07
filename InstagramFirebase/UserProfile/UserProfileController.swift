@@ -18,6 +18,7 @@ class UserProfileController: UICollectionViewController,
     let cellId = "cellId"
     let headerId = "headerId"
     var posts = [Post]()
+    var userId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +31,6 @@ class UserProfileController: UICollectionViewController,
                                  forCellWithReuseIdentifier: cellId)
         setupLogOutButton()
         fetchUser()
-        fetchOrderedPosts()
         // fetchPosts()
     }
     
@@ -124,19 +124,23 @@ class UserProfileController: UICollectionViewController,
     // MARK: - Fetch User
     
     fileprivate func fetchUser() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let uid = userId ?? Auth.auth().currentUser?.uid ?? ""
+
+        // guard let uid = Auth.auth().currentUser?.uid else { return }
         Database.fetchUserWithUID(uid: uid) { (user) in
             self.user = user
             self.navigationItem.title = self.user?.username
             
             self.collectionView?.reloadData()
+            self.fetchOrderedPosts()
+
         }
     }
     
     // MARK: - Fetch Posts
     
     fileprivate func fetchOrderedPosts() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let uid = self.user?.uid else { return }
         let ref = Database.database().reference().child("posts").child(uid)
         
         ref.queryOrdered(byChild: "creationDate").observe(.childAdded, with: { (snapshot) in
