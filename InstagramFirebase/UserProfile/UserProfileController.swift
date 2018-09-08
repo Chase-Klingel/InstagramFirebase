@@ -31,7 +31,6 @@ class UserProfileController: UICollectionViewController,
                                  forCellWithReuseIdentifier: cellId)
         setupLogOutButton()
         fetchUser()
-        // fetchPosts()
     }
     
     // MARK: - Collection View Definition
@@ -126,14 +125,12 @@ class UserProfileController: UICollectionViewController,
     fileprivate func fetchUser() {
         let uid = userId ?? Auth.auth().currentUser?.uid ?? ""
 
-        // guard let uid = Auth.auth().currentUser?.uid else { return }
         Database.fetchUserWithUID(uid: uid) { (user) in
             self.user = user
             self.navigationItem.title = self.user?.username
             
             self.collectionView?.reloadData()
             self.fetchOrderedPosts()
-
         }
     }
     
