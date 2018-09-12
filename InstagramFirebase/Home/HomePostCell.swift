@@ -96,17 +96,17 @@ class HomePostCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupUserProfileImage()
-        setupPhotoImage()
-        setupOptionsButton()
-        setupUsername()
-        setupActionButtons()
-        setupPhotoCaption()
+        anchorProfileImage()
+        anchorPhotoImage()
+        anchorOptionsButton()
+        anchorUsername()
+        anchorActionButtons()
+        anchorPhotoCaption()
     }
     
     // MARK: - UI Element Positioning
     
-    fileprivate func setupUserProfileImage() {
+    fileprivate func anchorProfileImage() {
         addSubview(userProfileImageView)
 
         userProfileImageView.anchor(top: topAnchor, leading: leadingAnchor,
@@ -116,7 +116,17 @@ class HomePostCell: UICollectionViewCell {
         userProfileImageView.layer.cornerRadius = 40 / 2
     }
     
-    fileprivate func setupUsername() {
+    fileprivate func anchorPhotoImage() {
+        addSubview(photoImageView)
+        
+        photoImageView.anchor(top: userProfileImageView.bottomAnchor, leading: leadingAnchor,
+                              bottom: nil, trailing: trailingAnchor,
+                              paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
+                              width: 0, height: 0)
+        photoImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
+    }
+    
+    fileprivate func anchorUsername() {
         addSubview(usernameLabel)
 
         usernameLabel.anchor(top: topAnchor, leading: userProfileImageView.trailingAnchor,
@@ -125,7 +135,7 @@ class HomePostCell: UICollectionViewCell {
                              width: 0, height: 0)
     }
     
-    fileprivate func setupOptionsButton() {
+    fileprivate func anchorOptionsButton() {
         addSubview(optionsButton)
 
         optionsButton.anchor(top: topAnchor, leading: nil,
@@ -134,17 +144,7 @@ class HomePostCell: UICollectionViewCell {
                              width: 44, height: 0)
     }
     
-    fileprivate func setupPhotoImage() {
-        addSubview(photoImageView)
-
-        photoImageView.anchor(top: userProfileImageView.bottomAnchor, leading: leadingAnchor,
-                              bottom: nil, trailing: trailingAnchor,
-                              paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-                              width: 0, height: 0)
-        photoImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
-    }
-    
-    fileprivate func setupActionButtons() {
+    fileprivate func anchorActionButtons() {
         let stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, sendMessageButton])
         stackView.distribution = .fillEqually
         
@@ -181,7 +181,7 @@ class HomePostCell: UICollectionViewCell {
         captionLabel.attributedText = attributedText
     }
     
-    fileprivate func setupPhotoCaption() {
+    fileprivate func anchorPhotoCaption() {
         addSubview(captionLabel)
         
         captionLabel.anchor(top: likeButton.bottomAnchor, leading: leadingAnchor,

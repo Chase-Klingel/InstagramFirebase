@@ -39,6 +39,12 @@ class CameraController: UIViewController,
         setupHUD()
     }
     
+    // MARK: - Hide Status Bar
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     // MARK: - position UI Elements
     
     fileprivate func setupHUD() {
@@ -55,7 +61,6 @@ class CameraController: UIViewController,
                              paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 12,
                              width: 50, height: 50)
     }
-    
     
     // MARK: - Capture Photo
     
@@ -77,13 +82,15 @@ class CameraController: UIViewController,
 
         let previewImage = UIImage(data: imageData!)
         
-        let previewImageView = UIImageView(image: previewImage)
-        view.addSubview(previewImageView)
-        previewImageView.anchor(top: view.topAnchor, leading: view.leadingAnchor,
-                                bottom: view.bottomAnchor, trailing: view.trailingAnchor,
-                                paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-                                width: 0, height: 0)
+        let containerView = PreviewPhotoContainerView()
+        containerView.previewImageView.image = previewImage
+        view.addSubview(containerView)
+        containerView.anchor(top: view.topAnchor, leading: view.leadingAnchor,
+                             bottom: view.bottomAnchor, trailing: view.trailingAnchor,
+                             paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
+                             width: 0, height: 0)
     }
+    
     let output = AVCapturePhotoOutput()
 
     fileprivate func setupCaptureSession() {
