@@ -10,7 +10,8 @@ import UIKit
 import AVFoundation
 
 class CameraController: UIViewController,
-    AVCapturePhotoCaptureDelegate {
+    AVCapturePhotoCaptureDelegate,
+    UIViewControllerTransitioningDelegate {
     
     // MARK: - UI Element Definitions
 
@@ -35,6 +36,7 @@ class CameraController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        transitioningDelegate = self
         setupCaptureSession()
         setupHUD()
     }
@@ -43,6 +45,21 @@ class CameraController: UIViewController,
     
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    // MARK: - Present / Dismiss Custom Transition
+    
+    let customAnimationPresentor = CustomAnimationPresentor()
+    func animationController(forPresented presented: UIViewController,
+                             presenting: UIViewController,
+                             source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customAnimationPresentor
+    }
+    
+    let customAnimationDismisser = CustomAnimationDismisser()
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return customAnimationDismisser
     }
     
     // MARK: - position UI Elements
