@@ -192,6 +192,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate,
     @objc fileprivate func handleShowLoginController() {
         _ = navigationController?.popViewController(animated: true)
     }
+    
+    // MARK: - View Did Load
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -207,13 +209,13 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate,
      
         plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        setupInputFields()
-        setupHaveAccountButton()
+        anchorInputFields()
+        anchorHaveAccountButton()
     }
     
     // MARK: - Position UI Input Fields (email, username, password, sign up button)
 
-    fileprivate func setupInputFields() {
+    fileprivate func anchorInputFields() {
         let stackView = UIStackView(arrangedSubviews:
             [emailTextField, usernameTextField, passwordTextField, signUpButton])
         
@@ -231,7 +233,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate,
     
     // MARK: - Position Have Account Button
     
-    fileprivate func setupHaveAccountButton() {
+    fileprivate func anchorHaveAccountButton() {
         view.addSubview(alreadyHaveAccountButton)
         
         alreadyHaveAccountButton.anchor(top: nil, leading: view.leadingAnchor,

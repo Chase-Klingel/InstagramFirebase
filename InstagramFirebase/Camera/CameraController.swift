@@ -33,6 +33,8 @@ class CameraController: UIViewController,
         dismiss(animated: true, completion: nil)
     }
     
+    // MARK: - View Did Load
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

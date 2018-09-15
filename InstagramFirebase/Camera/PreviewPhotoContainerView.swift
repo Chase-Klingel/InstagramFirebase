@@ -17,7 +17,7 @@ class PreviewPhotoContainerView: UIView {
         return iv
     }()
     
-    // MARK: - Cancel From Preview
+    // MARK: - Cancel Photo
     
     let cancelButton: UIButton = {
         let button = UIButton(type: .system)
@@ -95,6 +95,8 @@ class PreviewPhotoContainerView: UIView {
             
         }
     }
+    
+    // MARK: - Init View
   
     override init(frame: CGRect) {
         super.init(frame: frame)

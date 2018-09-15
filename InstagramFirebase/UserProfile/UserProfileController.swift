@@ -20,6 +20,8 @@ class UserProfileController: UICollectionViewController,
     var posts = [Post]()
     var userId: String?
     
+    // MARK: - View Did Load
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

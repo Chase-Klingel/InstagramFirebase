@@ -118,21 +118,25 @@ class UserProfileHeader: UICollectionViewCell {
         return button
     }()
     
-    // MARK: - Init UICollectionViewCell
+    // MARK: - Init View
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupProfileImage()
-        setupUserStatsView()
-        setupEditProfileButton()
-        setupBottomToolBar()
-        setupUsernameLabel()
+        anchorProfileImage()
+        anchorUserStatsView()
+        anchorEditProfileButton()
+        anchorBottomToolBar()
+        anchorUsernameLabel()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Profile Image Positioning
     
-    fileprivate func setupProfileImage() {
+    fileprivate func anchorProfileImage() {
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor, leading: leadingAnchor,
                                 bottom: nil, trailing: nil,
@@ -144,7 +148,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     // MARK: - Edit Profile Button Positioning
     
-    fileprivate func setupEditProfileButton() {
+    fileprivate func anchorEditProfileButton() {
         addSubview(editProfileFollowButton)
         
         editProfileFollowButton.anchor(top: postsLabel.bottomAnchor, leading: postsLabel.leadingAnchor,
@@ -193,7 +197,12 @@ class UserProfileHeader: UICollectionViewCell {
         guard let userId = user?.uid else { return }
         
         if editProfileFollowButton.titleLabel?.text == "Unfollow" {
-            Database.database().reference().child("following").child(currentLoggedInUserId).child(userId).removeValue { (err, ref) in
+            Database
+                .database()
+                .reference()
+                .child("following")
+                .child(currentLoggedInUserId)
+                .child(userId).removeValue { (err, ref) in
                 if let err = err {
                     print("Failed to unfollow user:", err)
                     
@@ -204,7 +213,11 @@ class UserProfileHeader: UICollectionViewCell {
                 self.setupFollowStyle()
             }
         } else {
-            let ref = Database.database().reference().child("following").child(currentLoggedInUserId)
+            let ref = Database
+                        .database()
+                        .reference()
+                        .child("following")
+                        .child(currentLoggedInUserId)
             
             let values = [userId: 1]
             ref.updateChildValues(values) { (err, ref) in
@@ -225,7 +238,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     // MARK: - Profile Stats Positioning
     
-    fileprivate func setupUserStatsView() {
+    fileprivate func anchorUserStatsView() {
         let stackView = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
         addSubview(stackView)
         
@@ -240,7 +253,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     // MARK: - Header Tool Bar Positioning
 
-    fileprivate func setupBottomToolBar() {
+    fileprivate func anchorBottomToolBar() {
         let topDividerView = UIView()
         topDividerView.backgroundColor = UIColor(white: 0, alpha: 0.1)
         
@@ -274,17 +287,12 @@ class UserProfileHeader: UICollectionViewCell {
     
     // MARK: - Username Positioning
 
-    fileprivate func setupUsernameLabel() {
+    fileprivate func anchorUsernameLabel() {
         addSubview(usernameLabel)
         
         usernameLabel.anchor(top: profileImageView.bottomAnchor, leading: leadingAnchor,
                              bottom: nil, trailing: trailingAnchor,
                              paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0,
                              width: 0, height: 0)
-    }
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

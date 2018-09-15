@@ -8,14 +8,17 @@
 
 import UIKit
 
+// MARK: - Protocols
+
 protocol HomePostCellDelegate {
     func didTapComment(post: Post)
 }
 
 class HomePostCell: UICollectionViewCell {
     
-    var delegate: HomePostCellDelegate?
     // MARK: -  Instance Variables And UI Element Defs
+
+    var delegate: HomePostCellDelegate?
 
     var post: Post? {
         didSet {
@@ -101,7 +104,7 @@ class HomePostCell: UICollectionViewCell {
         return iv
     }()
     
-    // MARK: - Initializers
+    // MARK: - Init View
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -112,6 +115,10 @@ class HomePostCell: UICollectionViewCell {
         anchorUsername()
         anchorActionButtons()
         anchorPhotoCaption()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - UI Element Positioning
@@ -198,9 +205,5 @@ class HomePostCell: UICollectionViewCell {
                             bottom: bottomAnchor, trailing: trailingAnchor,
                             paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8,
                             width: 0, height: 0)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

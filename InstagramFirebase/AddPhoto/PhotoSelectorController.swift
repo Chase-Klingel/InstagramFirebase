@@ -21,6 +21,8 @@ class PhotoSelectorController: UICollectionViewController,
     var selectedImage: UIImage?
     var header: PhotoSelectorHeader?
     
+    // MARK: - View Did Load
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

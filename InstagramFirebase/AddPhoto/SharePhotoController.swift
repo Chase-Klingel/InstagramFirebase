@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 
 class SharePhotoController: UIViewController {
+    
     // MARK: -  Instance Variables And UI Element Defs
     
     var selectedImage: UIImage? {
@@ -34,6 +35,8 @@ class SharePhotoController: UIViewController {
         return tv
     }()
     
+    // MARK: - View Did Load
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
@@ -86,7 +89,12 @@ class SharePhotoController: UIViewController {
         
         let fileName = NSUUID().uuidString
         
-        let storageRef = Storage.storage().reference().child("posts").child(fileName)
+        let storageRef = Storage
+                        .storage()
+                        .reference()
+                        .child("posts")
+                        .child(fileName)
+        
         storageRef.putData(uploadData, metadata: nil) { (metadata, err) in
             if let err = err {
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -118,7 +126,12 @@ class SharePhotoController: UIViewController {
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        let userPostRef = Database.database().reference().child("posts").child(uid)
+        let userPostRef = Database
+                            .database()
+                            .reference()
+                            .child("posts")
+                            .child(uid)
+        
         let ref = userPostRef.childByAutoId()
         
         let values = ["imageUrl": imageUrl,

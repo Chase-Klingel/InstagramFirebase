@@ -16,7 +16,11 @@ class HomeController: UICollectionViewController,
     UICollectionViewDelegateFlowLayout,
     HomePostCellDelegate {
     
+    // MARK: - Instance Variables
+
     let cellId = "cellId"
+    
+    // MARK: - View Did Load
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +40,8 @@ class HomeController: UICollectionViewController,
         fetchAllPosts()
     }
     
+    // MARK: - Feed Updates / Refresh
+    
     @objc func handleUpdateFeed() {
         handleRefresh()
     }
@@ -45,6 +51,8 @@ class HomeController: UICollectionViewController,
         posts.removeAll()
         fetchAllPosts()
     }
+    
+    // MARK: - Fetch Posts
     
     fileprivate func fetchAllPosts() {
         fetchPosts()
@@ -68,9 +76,6 @@ class HomeController: UICollectionViewController,
         }
     }
     
-    //iOS9
-    //let refreshControl = UIRefreshControl()
-    
     var posts = [Post]()
     fileprivate func fetchPosts() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -91,7 +96,8 @@ class HomeController: UICollectionViewController,
             dictionaries.forEach({ (key, value) in
                 guard let dictionary = value as? [String: Any] else { return }
                 
-                let post = Post(user: user, dictionary: dictionary)
+                var post = Post(user: user, dictionary: dictionary)
+                post.id = key
                 
                 self.posts.append(post)
             })
@@ -107,6 +113,8 @@ class HomeController: UICollectionViewController,
         }
     }
     
+    // MARK: - Navigate to Camera View
+    
     func setupNavigationItems() {
         navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
         
@@ -119,6 +127,8 @@ class HomeController: UICollectionViewController,
         let cameraController = CameraController()
         present(cameraController, animated: true, completion: nil)
     }
+    
+    // MARK: - Collection View Methods
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
@@ -145,8 +155,11 @@ class HomeController: UICollectionViewController,
         return cell
     }
     
+    // MARK: - Comment View Transition
+    
     func didTapComment(post: Post) {
         let commentsController = CommentsController(collectionViewLayout: UICollectionViewLayout())
+        commentsController.post = post
         navigationController?.pushViewController(commentsController, animated: true)
     }
     

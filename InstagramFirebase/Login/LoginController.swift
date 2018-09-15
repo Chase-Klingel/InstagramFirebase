@@ -11,8 +11,8 @@ import Firebase
 
 class LoginController: UIViewController {
     
-    // MARK: - Position Login Header With Logo
-    
+    // MARK: - UI Element Definitions
+
     let logoContainerView: UIView = {
         let view = UIView()
         let logoImageView = UIImageView(image: #imageLiteral(resourceName: "Instagram_logo_white"))
@@ -23,15 +23,15 @@ class LoginController: UIViewController {
                              bottom: nil, trailing: nil,
                              paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
                              width: 200, height: 50)
-        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        logoImageView.centerXAnchor
+            .constraint(equalTo: view.centerXAnchor).isActive = true
+        logoImageView.centerYAnchor
+            .constraint(equalTo: view.centerYAnchor).isActive = true
         
         view.backgroundColor = UIColor.rgb(red: 0, green: 120, blue: 175)
         
         return view
     }()
-    
-    // UI Input Field Definitions (email, password, login button)
     
     let emailTextField: UITextField = {
         let tf = UITextField()
@@ -128,6 +128,8 @@ class LoginController: UIViewController {
         return .lightContent
     }
     
+    // MARK: - View Did Load
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -141,13 +143,13 @@ class LoginController: UIViewController {
         view.backgroundColor = .white
         
         
-        setupInputFields()
-        setupDontHaveAccountButton()
+        anchorInputFields()
+        anchorDontHaveAccountButton()
     }
     
-    // MARK: - Position UI Input Fields (email, password, login button)
+    // MARK: - Position UI Elements
     
-    fileprivate func setupInputFields() {
+    fileprivate func anchorInputFields() {
         let stackView = UIStackView(arrangedSubviews: [emailTextField, passwordTextField, loginButton])
         stackView.axis = .vertical
         stackView.spacing = 10
@@ -160,7 +162,7 @@ class LoginController: UIViewController {
                          width: 0, height: 140)
     }
     
-    fileprivate func setupDontHaveAccountButton() {
+    fileprivate func anchorDontHaveAccountButton() {
         view.addSubview(dontHaveAccountButton)
         dontHaveAccountButton.anchor(top: nil, leading: view.leadingAnchor,
                              bottom: view.bottomAnchor, trailing: view.trailingAnchor,

@@ -29,7 +29,7 @@ class UserProfilePhotoCell: UICollectionViewCell {
         return iv;
     }()
     
-    // MARK: - Initializers
+    // MARK: - Init View
 
     override init(frame: CGRect) {
         super.init(frame: frame)
