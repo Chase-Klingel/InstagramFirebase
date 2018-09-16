@@ -9,19 +9,29 @@
 import UIKit
 import Firebase
 
-class CommentsController: UICollectionViewController {
+class CommentsController: UICollectionViewController,
+    UICollectionViewDelegateFlowLayout {
     
     // MARK: - Instance Variables
 
     var post: Post?
+    var comments = [Comment]()
+    let cellId = "cellId"
     
-    // MARK: - Loading View And View Transitions
+    // MARK: - Load View And View Transitions
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.title = "Comments"
         
-        collectionView?.backgroundColor = .white
+        collectionView?.backgroundColor = .red
+        collectionView?.contentInset =
+            UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
+        collectionView?.scrollIndicatorInsets =
+            UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
+        collectionView?.register(CommentCell.self,
+                                 forCellWithReuseIdentifier: cellId)
+        fetchComments()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,6 +42,47 @@ class CommentsController: UICollectionViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
+    }
+    
+    // MARK: - Fetch Comments
+    
+    fileprivate func fetchComments() {
+        guard let postId = self.post?.id else { return }
+        let commentRef = Database
+                            .database()
+                            .reference()
+                            .child("comments")
+                            .child(postId)
+        
+        commentRef.observe(.childAdded, with: { (snapshot) in
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            
+            let comment = Comment(dictionary: dictionary)
+            self.comments.append(comment)
+            self.collectionView?.reloadData()
+        }) { (err) in
+            print("Failed to observe comments ", err)
+        }
+    }
+    
+    // MARK: - Collection View Methods
+    
+    // must conform to UICollectionViewDelegateFlowLayout protocol to use this
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 50)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return comments.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId,
+                                                      for: indexPath) as! CommentCell
+        cell.comment = comments[indexPath.item]
+        
+        return cell
     }
     
     // MARK: - Container View

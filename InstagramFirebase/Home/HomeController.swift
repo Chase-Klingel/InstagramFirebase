@@ -158,7 +158,7 @@ class HomeController: UICollectionViewController,
     // MARK: - Comment View Transition
     
     func didTapComment(post: Post) {
-        let commentsController = CommentsController(collectionViewLayout: UICollectionViewLayout())
+        let commentsController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
         commentsController.post = post
         navigationController?.pushViewController(commentsController, animated: true)
     }
