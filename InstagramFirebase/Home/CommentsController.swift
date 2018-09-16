@@ -24,11 +24,10 @@ class CommentsController: UICollectionViewController,
         super.viewDidLoad()
         navigationItem.title = "Comments"
         
-        collectionView?.backgroundColor = .red
-        collectionView?.contentInset =
-            UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
-        collectionView?.scrollIndicatorInsets =
-            UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
+        collectionView?.backgroundColor = .white
+        collectionView?.alwaysBounceVertical = true
+        // dismiss keyboard when you scroll up and down
+        collectionView?.keyboardDismissMode = .interactive
         collectionView?.register(CommentCell.self,
                                  forCellWithReuseIdentifier: cellId)
         fetchComments()
@@ -55,11 +54,19 @@ class CommentsController: UICollectionViewController,
                             .child(postId)
         
         commentRef.observe(.childAdded, with: { (snapshot) in
-            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            guard let dictionary = snapshot.value as? [String: Any]
+                else { return }
             
-            let comment = Comment(dictionary: dictionary)
-            self.comments.append(comment)
-            self.collectionView?.reloadData()
+            guard let uid = dictionary["uid"] as? String
+                else { return }
+            
+            Database.fetchUserWithUID(uid: uid, completion: { (user) in
+                let comment = Comment(user: user, dictionary: dictionary)
+                self.comments.append(comment)
+                
+                self.collectionView?.reloadData()
+            })
+          
         }) { (err) in
             print("Failed to observe comments ", err)
         }
@@ -69,7 +76,24 @@ class CommentsController: UICollectionViewController,
     
     // must conform to UICollectionViewDelegateFlowLayout protocol to use this
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 50)
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let dummyCell = CommentCell(frame: frame)
+        dummyCell.comment = comments[indexPath.item]
+        /*
+            ensures your profile image view and comment text
+            field is added before estimating size.
+        */
+        dummyCell.layoutIfNeeded()
+        
+        let targetSize = CGSize(width: view.frame.width, height: 1000)
+        let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
+        let height = max(40 + 8 + 8, estimatedSize.height)
+    
+        return CGSize(width: view.frame.width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -88,10 +112,12 @@ class CommentsController: UICollectionViewController,
     // MARK: - Container View
     
     lazy var containerView: UIView = {
+        // container view
         let containerView = UIView()
         containerView.backgroundColor = .white
         containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
         
+        // submit button
         let submitButton = UIButton(type: .system)
         submitButton.setTitle("Submit", for: .normal)
         submitButton.setTitleColor(.black, for: .normal)
@@ -104,11 +130,18 @@ class CommentsController: UICollectionViewController,
                             paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12,
                             width: 50, height: 0)
         
+        // comment text field
         containerView.addSubview(commentTextField)
         commentTextField.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor,
                          bottom: containerView.bottomAnchor, trailing: submitButton.leadingAnchor,
                          paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0,
                          width: 0, height: 0)
+        
+        // line separator
+        let lineSeparatorView = UIView()
+        lineSeparatorView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
+        containerView.addSubview(lineSeparatorView)
+        lineSeparatorView.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
         
         return containerView
     }()
