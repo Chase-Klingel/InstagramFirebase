@@ -10,16 +10,32 @@ import UIKit
 import Firebase
 
 class UserProfileController: UICollectionViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    UserProfileHeaderDelegate {
     
     // MARK: - Instance Variables
     
     var user: User?
-    let cellId = "cellId"
-    let headerId = "headerId"
-    var posts = [Post]()
     var userId: String?
+
+    let gridCell = "gridCell"
+    let listCell = "listCell"
+    let headerId = "headerId"
     
+    var posts = [Post]()
+    
+    var isGridView = true
+    
+    func didChangeToGridView() {
+        isGridView = true
+        collectionView?.reloadData()
+    }
+    
+    func didChangeToListView() {
+        isGridView = false
+        collectionView?.reloadData()
+    }
+
     // MARK: - View Did Load
     
     override func viewDidLoad() {
@@ -30,7 +46,9 @@ class UserProfileController: UICollectionViewController,
                                  forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
                                  withReuseIdentifier: headerId)
         collectionView?.register(UserProfilePhotoCell.self,
-                                 forCellWithReuseIdentifier: cellId)
+                                 forCellWithReuseIdentifier: gridCell)
+        collectionView?.register(HomePostCell.self, forCellWithReuseIdentifier: listCell)
+        
         setupLogOutButton()
         fetchUser()
     }
@@ -48,25 +66,33 @@ class UserProfileController: UICollectionViewController,
                                               for: indexPath) as! UserProfileHeader
         
         header.user = self.user
+        header.delegate = self
         
         return header
     }
     
-    // numberOfItems
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
         return posts.count
     }
     
-    // cellForItem
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId,
-                                                      for: indexPath) as! UserProfilePhotoCell
         
-        cell.post = posts[indexPath.item]
-    
-        return cell
+        if isGridView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: gridCell,
+                                                          for: indexPath) as! UserProfilePhotoCell
+            cell.post = posts[indexPath.item]
+            
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listCell,
+                                                          for: indexPath) as! HomePostCell
+            cell.post = posts[indexPath.item]
+            
+            return cell
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -84,9 +110,11 @@ class UserProfileController: UICollectionViewController,
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (view.frame.width - 2) / 3
-        
-        return CGSize(width: width, height: width)
+        if isGridView {
+            return UIFormatter.sizeGridCells(view: view)
+        } else {
+            return UIFormatter.sizeHomeCells(view: view)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView,

@@ -24,6 +24,7 @@
 		6526780E214D85BC000ACFFE /* CommentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6526780D214D85BC000ACFFE /* CommentsController.swift */; };
 		65267810214EB7D9000ACFFE /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6526780F214EB7D9000ACFFE /* CommentCell.swift */; };
 		65267812214EC2FE000ACFFE /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65267811214EC2FE000ACFFE /* Comment.swift */; };
+		652678322151FA1E000ACFFE /* UIFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652678312151FA1E000ACFFE /* UIFormatter.swift */; };
 		654D71BE2127159B00F1257D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D71BD2127159B00F1257D /* Post.swift */; };
 		654D71C021289C9300F1257D /* UserProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D71BF21289C9300F1257D /* UserProfilePhotoCell.swift */; };
 		654D71C22128A9F900F1257D /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D71C12128A9F900F1257D /* CustomImageView.swift */; };
@@ -62,6 +63,7 @@
 		6526780D214D85BC000ACFFE /* CommentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsController.swift; sourceTree = "<group>"; };
 		6526780F214EB7D9000ACFFE /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		65267811214EC2FE000ACFFE /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		652678312151FA1E000ACFFE /* UIFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFormatter.swift; sourceTree = "<group>"; };
 		654D71BD2127159B00F1257D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		654D71BF21289C9300F1257D /* UserProfilePhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePhotoCell.swift; sourceTree = "<group>"; };
 		654D71C12128A9F900F1257D /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				6511B2282103BB84007B9FB7 /* Extenions.swift */,
 				654D71C12128A9F900F1257D /* CustomImageView.swift */,
 				6575B1FB213649AB00A147FC /* FirebaseUtils.swift */,
+				652678312151FA1E000ACFFE /* UIFormatter.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				6526780E214D85BC000ACFFE /* CommentsController.swift in Sources */,
 				65704C05212251C80011529C /* PhotoSelectorController.swift in Sources */,
 				65267812214EC2FE000ACFFE /* Comment.swift in Sources */,
+				652678322151FA1E000ACFFE /* UIFormatter.swift in Sources */,
 				654D71C5212B966B00F1257D /* HomeController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
