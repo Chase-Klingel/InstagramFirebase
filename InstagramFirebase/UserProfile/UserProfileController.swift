@@ -26,6 +26,8 @@ class UserProfileController: UICollectionViewController,
     
     var isGridView = true
     
+    var isFinishedPaging = false
+    
     func didChangeToGridView() {
         isGridView = true
         collectionView?.reloadData()
@@ -78,6 +80,10 @@ class UserProfileController: UICollectionViewController,
     
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        if indexPath.item == self.posts.count - 1 && !isFinishedPaging {
+            paginatePosts()
+        }
         
         if isGridView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: gridCell,
@@ -160,28 +166,64 @@ class UserProfileController: UICollectionViewController,
             self.navigationItem.title = self.user?.username
             
             self.collectionView?.reloadData()
-            self.fetchOrderedPosts()
+            
+            self.paginatePosts()
         }
     }
     
     // MARK: - Fetch Posts
     
-    fileprivate func fetchOrderedPosts() {
+    fileprivate func paginatePosts() {
         guard let uid = self.user?.uid else { return }
-        let ref = Database.database().reference().child("posts").child(uid)
         
-        ref.queryOrdered(byChild: "creationDate").observe(.childAdded, with: { (snapshot) in
-            guard let dictionary = snapshot.value as? [String: Any] else { return }
+        let ref = Database
+                    .database()
+                    .reference()
+                    .child("posts")
+                    .child(uid)
+        
+        var query = ref.queryOrdered(byChild: "creationDate")
+        // var query = ref.queryOrderedByKey()
+        
+        if posts.count > 0 {
+            let value = posts.last?.creationDate.timeIntervalSince1970
+            query = query.queryEnding(atValue: value)
+        }
+        
+        queryUserPosts(query: query)
+    }
+    
+    fileprivate func queryUserPosts(query: DatabaseQuery) {
+        query.queryLimited(toLast: 4).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            guard var allObjects = snapshot.children.allObjects as? [DataSnapshot]
+                else { return }
+            
+            allObjects.reverse()
+            
+            if allObjects.count < 4 {
+                self.isFinishedPaging = true
+            }
+            
+            if self.posts.count > 0 && allObjects.count > 0 {
+                allObjects.removeFirst()
+            }
+            
             guard let user = self.user else { return }
             
-            let post = Post(user: user, dictionary: dictionary)
-            self.posts.insert(post, at: 0)
-            //self.posts.append(post)
-            //self.posts.reverse()
+            allObjects.forEach({ (snapshot) in
+                guard let dictionary = snapshot.value as? [String: Any]
+                    else { return }
+                
+                var post = Post(user: user, dictionary: dictionary)
+                post.id = snapshot.key
+                
+                self.posts.append(post)
+            })
             
             self.collectionView?.reloadData()
         }) { (err) in
-            print("Failed to fetch ordered posts: ", err)
+            print("Failed to paginate for posts ", err)
         }
     }
 }
