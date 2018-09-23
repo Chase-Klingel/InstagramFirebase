@@ -10,7 +10,8 @@ import UIKit
 import Firebase
 
 class CommentsController: UICollectionViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    CommentInputAccessoryViewDelegate {
     
     // MARK: - Instance Variables
 
@@ -111,69 +112,36 @@ class CommentsController: UICollectionViewController,
     
     // MARK: - Container View
     
-    lazy var containerView: UIView = {
-        // container view
-        let containerView = UIView()
-        containerView.backgroundColor = .white
-        containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
+    lazy var containerView: CommentInputAccessoryView = {
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let commentInputAccessoryView = CommentInputAccessoryView(frame: frame)
+        commentInputAccessoryView.delegate = self
         
-        // submit button
-        let submitButton = UIButton(type: .system)
-        submitButton.setTitle("Submit", for: .normal)
-        submitButton.setTitleColor(.black, for: .normal)
-        submitButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        submitButton.addTarget(self, action: #selector(handleSubmit), for: .touchUpInside)
-        
-        containerView.addSubview(submitButton)
-        submitButton.anchor(top: containerView.topAnchor, leading: nil,
-                            bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor,
-                            paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12,
-                            width: 50, height: 0)
-        
-        // comment text field
-        containerView.addSubview(commentTextField)
-        commentTextField.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor,
-                         bottom: containerView.bottomAnchor, trailing: submitButton.leadingAnchor,
-                         paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0,
-                         width: 0, height: 0)
-        
-        // line separator
-        let lineSeparatorView = UIView()
-        lineSeparatorView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
-        containerView.addSubview(lineSeparatorView)
-        lineSeparatorView.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, bottom: nil, trailing: containerView.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-        
-        return containerView
+        return commentInputAccessoryView
     }()
     
-    let commentTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Enter Comment"
-        
-        return textField
-    }()
-    
-    @objc func handleSubmit() {
+    func didSubmit(for comment: String) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         guard let postId = self.post?.id else { return }
-        let values = ["text": commentTextField.text ?? "",
+        let values = ["text": comment,
                       "creationDate": Date().timeIntervalSince1970,
-                      "uid": uid] as [String: Any]
-        Database
-            .database()
-            .reference()
-            .child("comments")
-            .child(postId)
-            .childByAutoId()
-            .updateChildValues(values) { (err, ref) in
-                if let err = err {
-                    print("Failed to enter comment: ", err)
-                    
-                    return
-                }
-                
-                print("Successfully inserted comment.")
-        }
+         "uid": uid] as [String: Any]
+         Database
+         .database()
+         .reference()
+         .child("comments")
+         .child(postId)
+         .childByAutoId()
+         .updateChildValues(values) { (err, ref) in
+            if let err = err {
+                print("Failed to enter comment: ", err)
+         
+                return
+            }
+         
+            print("Successfully inserted comment.")
+            self.containerView.clearCommentTextField()
+         }
     }
         
     override var inputAccessoryView: UIView? {
