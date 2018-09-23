@@ -21,7 +21,7 @@ class UserSearchCell: UICollectionViewCell {
     
     // MARK: - UI Element Definitions
 
-    let profileImageView: CustomImageView = {
+    fileprivate let profileImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
@@ -29,7 +29,7 @@ class UserSearchCell: UICollectionViewCell {
         return iv
     }()
     
-    let usernameLabel: UILabel = {
+    fileprivate let usernameLabel: UILabel = {
         let label = UILabel()
         label.text = "Username"
         label.font = UIFont.boldSystemFont(ofSize: 14)

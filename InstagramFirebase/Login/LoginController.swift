@@ -13,7 +13,7 @@ class LoginController: UIViewController {
     
     // MARK: - UI Element Definitions
 
-    let logoContainerView: UIView = {
+    fileprivate let logoContainerView: UIView = {
         let view = UIView()
         let logoImageView = UIImageView(image: #imageLiteral(resourceName: "Instagram_logo_white"))
         logoImageView.contentMode = .scaleAspectFill
@@ -33,7 +33,7 @@ class LoginController: UIViewController {
         return view
     }()
     
-    let emailTextField: UITextField = {
+    fileprivate let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Email"
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
@@ -44,7 +44,7 @@ class LoginController: UIViewController {
         return tf
     }()
     
-    let passwordTextField: UITextField = {
+    fileprivate let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Password"
         tf.isSecureTextEntry = true
@@ -56,7 +56,7 @@ class LoginController: UIViewController {
         return tf
     }()
     
-    let loginButton: UIButton = {
+    fileprivate let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Login", for: .normal)
         button.backgroundColor = UIColor.rgb(red: 149, green: 204, blue: 244)
@@ -104,7 +104,7 @@ class LoginController: UIViewController {
     
     // MARK: - Don't Have Account Helper Button
     
-    let dontHaveAccountButton: UIButton = {
+    fileprivate let dontHaveAccountButton: UIButton = {
         let button = UIButton(type: .system)
         let attributedTitle = NSMutableAttributedString(string: "Don't have an account? ",
                                                         attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14),
@@ -169,6 +169,4 @@ class LoginController: UIViewController {
                              paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
                              width: 0, height: 50)
     }
-    
-    
 }

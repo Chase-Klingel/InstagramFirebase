@@ -19,7 +19,7 @@ class SharePhotoController: UIViewController {
         }
     }
     
-    let imageView: UIImageView = {
+    fileprivate let imageView: UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = .red
         iv.contentMode = .scaleAspectFill
@@ -28,7 +28,7 @@ class SharePhotoController: UIViewController {
         return iv
     }()
     
-    let textView: UITextView = {
+    fileprivate let textView: UITextView = {
         let tv = UITextView()
         tv.font = UIFont.systemFont(ofSize: 14)
         

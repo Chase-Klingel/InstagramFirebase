@@ -15,14 +15,14 @@ class CameraController: UIViewController,
     
     // MARK: - UI Element Definitions
 
-    let capturePhotoButton: UIButton = {
+    fileprivate let capturePhotoButton: UIButton = {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "capture_photo").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleCapturePhoto), for: .touchUpInside)
         return button
     }()
     
-    let dismissButton: UIButton = {
+    fileprivate let dismissButton: UIButton = {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "right_arrow_shadow"), for: .normal)
         button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)

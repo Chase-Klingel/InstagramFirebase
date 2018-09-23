@@ -81,6 +81,5 @@ class CommentInputAccessoryView: UIView {
         commentTextField.text = nil
         
     }
-    
-  
+
 }

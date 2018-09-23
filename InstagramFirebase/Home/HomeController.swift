@@ -18,8 +18,9 @@ class HomeController: UICollectionViewController,
     
     // MARK: - Instance Variables
 
-    let cellId = "cellId"
-    
+    fileprivate let cellId = "cellId"
+    fileprivate var posts = [Post]()
+
     // MARK: - View Did Load
     
     override func viewDidLoad() {
@@ -81,7 +82,6 @@ class HomeController: UICollectionViewController,
             }
     }
     
-    var posts = [Post]()
     fileprivate func fetchPosts() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         

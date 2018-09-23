@@ -18,15 +18,15 @@ class UserProfileController: UICollectionViewController,
     var user: User?
     var userId: String?
 
-    let gridCell = "gridCell"
-    let listCell = "listCell"
-    let headerId = "headerId"
+    fileprivate let gridCell = "gridCell"
+    fileprivate let listCell = "listCell"
+    fileprivate let headerId = "headerId"
     
-    var posts = [Post]()
+    fileprivate var posts = [Post]()
     
-    var isGridView = true
+    fileprivate var isGridView = true
     
-    var isFinishedPaging = false
+    fileprivate var isFinishedPaging = false
     
     func didChangeToGridView() {
         isGridView = true

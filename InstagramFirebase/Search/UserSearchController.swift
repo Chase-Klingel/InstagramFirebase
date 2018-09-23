@@ -15,13 +15,13 @@ class UserSearchController: UICollectionViewController,
     
     // MARK: - Instance Variables
 
-    let cellId = "cellId"
-    var users = [User]()
-    var filteredUsers = [User]()
+    fileprivate let cellId = "cellId"
+    fileprivate var users = [User]()
+    fileprivate var filteredUsers = [User]()
     
     // MARK: - UI Element Definitions
 
-    lazy var searchBar: UISearchBar = {
+    fileprivate lazy var searchBar: UISearchBar = {
         let sb = UISearchBar()
         sb.placeholder = "Enter username"
         sb.barTintColor = .gray

@@ -16,8 +16,8 @@ class CommentsController: UICollectionViewController,
     // MARK: - Instance Variables
 
     var post: Post?
-    var comments = [Comment]()
-    let cellId = "cellId"
+    fileprivate var comments = [Comment]()
+    fileprivate let cellId = "cellId"
     
     // MARK: - Load View And View Transitions
     

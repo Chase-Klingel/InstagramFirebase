@@ -33,13 +33,13 @@ class UserProfileHeader: UICollectionViewCell {
     
     // MARK: - UI Element Definitions
     
-    let profileImageView: CustomImageView = {
+    fileprivate let profileImageView: CustomImageView = {
         let iv = CustomImageView()
         
         return iv
     }()
     
-    lazy var gridButton: UIButton = {
+    fileprivate lazy var gridButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "grid"), for: .normal)
         button.addTarget(self, action: #selector(handleChangeToGridView), for: .touchUpInside)
@@ -54,7 +54,7 @@ class UserProfileHeader: UICollectionViewCell {
         delegate?.didChangeToGridView()
     }
     
-    lazy var listButton: UIButton = {
+    fileprivate lazy var listButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "list"), for: .normal)
         button.tintColor = UIColor(white: 0, alpha: 0.1)
@@ -70,7 +70,7 @@ class UserProfileHeader: UICollectionViewCell {
         delegate?.didChangeToListView()
     }
     
-    let bookmarkButton: UIButton = {
+    fileprivate let bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "ribbon"), for: .normal)
         button.tintColor = UIColor(white: 0, alpha: 0.1)
@@ -78,14 +78,14 @@ class UserProfileHeader: UICollectionViewCell {
         return button
     }()
     
-    let usernameLabel: UILabel = {
+    fileprivate let usernameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 14)
 
         return label
     }()
     
-    let postsLabel: UILabel = {
+    fileprivate let postsLabel: UILabel = {
         let label = UILabel()
         let attributedText = NSMutableAttributedString(string: "11\n",
                                                        attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
@@ -100,7 +100,7 @@ class UserProfileHeader: UICollectionViewCell {
         return label
     }()
     
-    let followersLabel: UILabel = {
+    fileprivate let followersLabel: UILabel = {
         let label = UILabel()
         let attributedText = NSMutableAttributedString(string: "0\n",
                                                        attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
@@ -114,7 +114,7 @@ class UserProfileHeader: UICollectionViewCell {
         return label
     }()
     
-    let followingLabel: UILabel = {
+    fileprivate let followingLabel: UILabel = {
         let label = UILabel()
         let attributedText = NSMutableAttributedString(string: "0\n",
                                                        attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
@@ -128,7 +128,7 @@ class UserProfileHeader: UICollectionViewCell {
         return label
     }()
     
-    lazy var editProfileFollowButton: UIButton = {
+    fileprivate lazy var editProfileFollowButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Edit Profile", for: .normal)
         button.setTitleColor(.black, for: .normal)

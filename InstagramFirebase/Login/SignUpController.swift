@@ -14,7 +14,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate,
     
     // MARK: - Select User Profile IMG
     
-    let plusPhotoButton: UIButton = {
+    fileprivate let plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "plus_photo").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handlePlusPhoto), for: .touchUpInside)
@@ -48,7 +48,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate,
     
     // MARK: - UI Input Field Definitions (Email, Username, Password)
 
-    let emailTextField: UITextField = {
+    fileprivate let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Email"
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
@@ -60,7 +60,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate,
         return tf
     }()
     
-    let usernameTextField: UITextField = {
+    fileprivate let usernameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Username"
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
@@ -72,7 +72,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate,
         return tf
     }()
     
-    let passwordTextField: UITextField = {
+    fileprivate let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Password"
         tf.isSecureTextEntry = true
@@ -101,7 +101,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate,
     
     // MARK: - Handle Sign Up
     
-    let signUpButton: UIButton = {
+    fileprivate let signUpButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Sign Up", for: .normal)
         button.backgroundColor = UIColor.rgb(red: 149, green: 204, blue: 244)
@@ -177,7 +177,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate,
     
     // MARK: - Already Have Account Helper Button
     
-    let alreadyHaveAccountButton: UIButton = {
+    fileprivate let alreadyHaveAccountButton: UIButton = {
         let button = UIButton(type: .system)
         let attributedText = NSMutableAttributedString(string: "Already have an account? ",
                                                        attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14),

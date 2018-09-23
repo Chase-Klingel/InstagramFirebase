@@ -25,7 +25,7 @@ class CommentCell: UICollectionViewCell {
         }
     }
     
-    let textView: UITextView = {
+    fileprivate let textView: UITextView = {
         var textView = UITextView()
         textView.isScrollEnabled = false
         textView.font = UIFont.systemFont(ofSize: 14)
@@ -34,7 +34,7 @@ class CommentCell: UICollectionViewCell {
         return textView
     }()
     
-    let profileImageView: CustomImageView = {
+    fileprivate let profileImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.clipsToBounds = true
         iv.contentMode = .scaleAspectFill

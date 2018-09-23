@@ -19,7 +19,7 @@ class PreviewPhotoContainerView: UIView {
     
     // MARK: - Cancel Photo
     
-    let cancelButton: UIButton = {
+    fileprivate let cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "cancel_shadow").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleCancel), for: .touchUpInside)
@@ -33,7 +33,7 @@ class PreviewPhotoContainerView: UIView {
     
     // MARK: - Save Photo
     
-    let saveButton: UIButton = {
+    fileprivate let saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "save_shadow").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleSave), for: .touchUpInside)

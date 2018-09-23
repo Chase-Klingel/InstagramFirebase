@@ -38,7 +38,7 @@ class HomePostCell: UICollectionViewCell {
         }
     }
     
-    let userProfileImageView: CustomImageView = {
+    fileprivate let userProfileImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
@@ -46,7 +46,7 @@ class HomePostCell: UICollectionViewCell {
         return iv
     }()
     
-    let usernameLabel: UILabel = {
+    fileprivate let usernameLabel: UILabel = {
         let label = UILabel()
         label.text = "Username"
         label.font = UIFont.boldSystemFont(ofSize: 14)
@@ -54,7 +54,7 @@ class HomePostCell: UICollectionViewCell {
         return label
     }()
     
-    let optionsButton: UIButton = {
+    fileprivate let optionsButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("•••", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -62,7 +62,7 @@ class HomePostCell: UICollectionViewCell {
         return button
     }()
     
-    lazy var likeButton: UIButton = {
+    lazy fileprivate var likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "like_unselected").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
@@ -74,7 +74,7 @@ class HomePostCell: UICollectionViewCell {
         delegate?.didLike(for: self)
     }
     
-    lazy var commentButton: UIButton = {
+    lazy fileprivate var commentButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "comment").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleComment), for: .touchUpInside)
@@ -86,28 +86,28 @@ class HomePostCell: UICollectionViewCell {
         delegate?.didTapComment(post: post)
     }
     
-    let sendMessageButton: UIButton = {
+    fileprivate let sendMessageButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "send2").withRenderingMode(.alwaysOriginal), for: .normal)
         
         return button
     }()
     
-    let bookMarkButton: UIButton = {
+    fileprivate let bookMarkButton: UIButton = {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "ribbon").withRenderingMode(.alwaysOriginal), for: .normal)
         
         return button
     }()
     
-    let captionLabel: UILabel = {
+    fileprivate let captionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
                 
         return label
     }()
     
-    let photoImageView: CustomImageView = {
+    fileprivate let photoImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true

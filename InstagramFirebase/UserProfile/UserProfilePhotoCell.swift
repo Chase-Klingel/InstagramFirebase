@@ -21,7 +21,7 @@ class UserProfilePhotoCell: UICollectionViewCell {
     
     // MARK: - UI Element Definitions
     
-    let photoImageView: CustomImageView = {
+    fileprivate let photoImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
