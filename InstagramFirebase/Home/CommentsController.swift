@@ -140,7 +140,7 @@ class CommentsController: UICollectionViewController,
             }
          
             print("Successfully inserted comment.")
-            self.containerView.clearCommentTextField()
+            self.containerView.clearCommentTextView()
          }
     }
         

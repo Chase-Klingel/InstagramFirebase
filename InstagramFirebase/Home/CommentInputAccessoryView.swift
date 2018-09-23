@@ -28,35 +28,51 @@ class CommentInputAccessoryView: UIView {
         return button
     }()
     
-    fileprivate let commentTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Enter Comment"
+    // UITextView supports multi-line and UITextField does not
+    fileprivate let commentTextView: CommentInputTextView = {
+        let textView = CommentInputTextView()
+        textView.isScrollEnabled = false
+        textView.font = UIFont.systemFont(ofSize: 16)
+        //textField.placeholder = "Enter Comment"
         
-        return textField
+        return textView
     }()
     
     // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .white
+        autoresizingMask = .flexibleHeight
         
         addSubview(submitButton)
         submitButton.anchor(top: topAnchor, leading: nil,
-                            bottom: bottomAnchor, trailing: trailingAnchor,
+                            bottom: nil, trailing: trailingAnchor,
                             paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12,
-                            width: 50, height: 0)
+                            width: 50, height: 50)
         
-        addSubview(commentTextField)
-        commentTextField.anchor(top: topAnchor, leading: leadingAnchor,
-                                bottom: bottomAnchor, trailing: submitButton.leadingAnchor,
-                                paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0,
-                                width: 0, height: 0)
-        
-      anchorLineSeparator()
+        addSubview(commentTextView)
+        if #available(iOS 11, *) {
+            commentTextView.anchor(top: topAnchor, leading: leadingAnchor,
+                                    bottom: safeAreaLayoutGuide.bottomAnchor, trailing: submitButton.leadingAnchor,
+                                    paddingTop: 8, paddingLeft: 12, paddingBottom: 8, paddingRight: 0,
+                                    width: 0, height: 0)
+        } else {
+            commentTextView.anchor(top: topAnchor, leading: leadingAnchor,
+                                    bottom: bottomAnchor, trailing: submitButton.leadingAnchor,
+                                    paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0,
+                                    width: 0, height: 0)
+        }
+   
+        anchorLineSeparator()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return .zero
     }
     
     // MARK: - Helper Methods
@@ -72,14 +88,14 @@ class CommentInputAccessoryView: UIView {
     }
     
     @objc func handleSubmit() {
-        guard let commentText = commentTextField.text
+        guard let commentText = commentTextView.text
             else { return }
         delegate?.didSubmit(for: commentText)
     }
     
-    func clearCommentTextField() {
-        commentTextField.text = nil
-        
+    func clearCommentTextView() {
+        commentTextView.text = nil
+        commentTextView.displayPlaceholder()
     }
 
 }
