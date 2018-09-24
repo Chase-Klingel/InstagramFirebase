@@ -41,15 +41,62 @@ class SharePhotoController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share",
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(handleShare))
+        setupNavigationItems()
         setupImageAndTextViews()
     }
     
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    // MARK: - Navigation Items
+    
+    fileprivate func setupNavigationItems() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share",
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(handleShare))
+    }
+    
+    // MARK: - Storing Post in DB
+    
+    @objc fileprivate func handleShare() {
+        guard let caption = textView.text, !caption.isEmpty else { return }
+        guard let image = imageView.image else { return }
+        
+        guard let uploadData = UIImageJPEGRepresentation(image, 0.5) else { return }
+        
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        let fileName = NSUUID().uuidString
+        
+        let storageRef = Storage
+            .storage()
+            .reference()
+            .child("posts")
+            .child(fileName)
+        
+        storageRef.putData(uploadData, metadata: nil) { (metadata, err) in
+            if let err = err {
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                
+                print("Failed to upload post image: ", err)
+                return
+            }
+            
+            storageRef.downloadURL(completion: { (downloadUrl, err) in
+                if let err = err {
+                    print("Failed to fetch downloadURL: ", err)
+                    return
+                }
+                
+                guard let imageUrl = downloadUrl?.absoluteString else { return }
+                
+                print("Successfully uploaded post image: ", imageUrl)
+                
+                self.saveToDBWithImageUrl(imageUrl: imageUrl)
+            })
+        }
     }
     
     // MARK: - Position Image and Text View
@@ -75,47 +122,6 @@ class SharePhotoController: UIViewController {
                         bottom: containerView.bottomAnchor, trailing: containerView.trailingAnchor,
                         paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: 0,
                         width: 0, height: 0)
-    }
-    
-    // MARK: - Storing Post in DB
-    
-    @objc func handleShare() {
-        guard let caption = textView.text, !caption.isEmpty else { return }
-        guard let image = imageView.image else { return }
-        
-        guard let uploadData = UIImageJPEGRepresentation(image, 0.5) else { return }
-        
-        navigationItem.rightBarButtonItem?.isEnabled = false
-        
-        let fileName = NSUUID().uuidString
-        
-        let storageRef = Storage
-                        .storage()
-                        .reference()
-                        .child("posts")
-                        .child(fileName)
-        
-        storageRef.putData(uploadData, metadata: nil) { (metadata, err) in
-            if let err = err {
-                self.navigationItem.rightBarButtonItem?.isEnabled = true
-                
-                print("Failed to upload post image: ", err)
-                return
-            }
-            
-            storageRef.downloadURL(completion: { (downloadUrl, err) in
-                if let err = err {
-                    print("Failed to fetch downloadURL: ", err)
-                    return
-                }
-                
-                guard let imageUrl = downloadUrl?.absoluteString else { return }
-                
-                print("Successfully uploaded post image: ", imageUrl)
-                
-                self.saveToDBWithImageUrl(imageUrl: imageUrl)
-            })
-        }
     }
     
     static let updateFeedNotificationName = NSNotification.Name(rawValue: "UpdateFeed")
