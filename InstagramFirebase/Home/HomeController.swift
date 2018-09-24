@@ -9,9 +9,6 @@
 import UIKit
 import Firebase
 
-import UIKit
-import Firebase
-
 class HomeController: UICollectionViewController,
     UICollectionViewDelegateFlowLayout,
     HomePostCellDelegate {
@@ -37,7 +34,6 @@ class HomeController: UICollectionViewController,
         collectionView?.refreshControl = refreshControl
         
         setupNavigationItems()
-        
         fetchAllPosts()
     }
     
@@ -56,11 +52,6 @@ class HomeController: UICollectionViewController,
     // MARK: - Fetch Posts
     
     fileprivate func fetchAllPosts() {
-        fetchPosts()
-        fetchFollowingUserIds()
-    }
-    
-    fileprivate func fetchFollowingUserIds() {
         guard let uid = Auth.auth().currentUser?.uid
             else { return }
         Database
@@ -70,23 +61,15 @@ class HomeController: UICollectionViewController,
             .child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 guard let userIdsDictionary = snapshot.value as? [String: Any] else { return }
-            
+                
                 userIdsDictionary.forEach({ (key, value) in
                     Database.fetchUserWithUID(uid: key, completion: { (user) in
                         self.fetchPostsWithUser(user: user)
                     })
                 })
-            
+                
             }) { (err) in
                 print("Failed to fetch following user ids:", err)
-            }
-    }
-    
-    fileprivate func fetchPosts() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        
-        Database.fetchUserWithUID(uid: uid) { (user) in
-            self.fetchPostsWithUser(user: user)
         }
     }
     
@@ -148,8 +131,6 @@ class HomeController: UICollectionViewController,
     }
     
     @objc func handleCamera() {
-        print("Showing camera")
-        
         let cameraController = CameraController()
         present(cameraController, animated: true, completion: nil)
     }
@@ -171,7 +152,6 @@ class HomeController: UICollectionViewController,
         cell.post = posts[indexPath.item]
         
         cell.delegate = self
-        
         return cell
     }
     
